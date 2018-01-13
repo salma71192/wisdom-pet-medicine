@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import Appointment from './Appointment';
+import AddAppointment from './AddAppointment';
 import Data from './data.json';
 import _ from 'lodash';
 
 
 class MainInterface extends Component {
   state = {
-    data: []
+    data: [],
+    visible: false
   }
 
   // Load data from data.json file
@@ -24,6 +26,14 @@ class MainInterface extends Component {
     });
   }
 
+  // Toggle add appointment form visibility
+  handleToggle = (e) => {
+    var toggleVisibility = !this.state.visible;
+    this.setState({
+      visible: toggleVisibility
+    });
+  }
+
   render() {
     var appItems = this.state.data;
     var renderAppItems = appItems.map((item, index) => {
@@ -37,6 +47,10 @@ class MainInterface extends Component {
 
     return (
       <div className="interface">
+        <AddAppointment
+         visibility={this.state.visible}
+         onChange={this.handleToggle}
+         />
         <ul className="item-list media-list">
         {renderAppItems}
         </ul>
