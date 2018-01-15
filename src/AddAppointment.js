@@ -2,6 +2,17 @@ import React, { Component } from 'react';
 
 class AddAppointment extends Component {
 
+  AddAppointmentData = (e) => {
+    e.preventDefault();
+    var tempData = {
+      petName: this.refs.inputPetName.value,
+      ownerName: this.refs.inputOwnerName.value,
+      aptDate: this.refs.inputAptDate.value + ' ' + this.refs.inputAptTime.value,
+      aptNotes: this.refs.inputAptNotes.value
+    };
+    this.props.handleAdd(tempData);
+  }
+
   render() {
     var divstyle = this.props.visibility ? 'block' : 'none';
     var dispaly = {
@@ -50,7 +61,7 @@ class AddAppointment extends Component {
             </div>
             <div className="form-group">
               <div className="col-sm-offset-2 col-sm-10">
-                <button type="submit" className="btn btn-primary pull-right">Add Appointment</button>
+                <button type="submit" className="btn btn-primary pull-right" onClick={this.AddAppointmentData}>Add Appointment</button>
               </div>
             </div>
           </form>

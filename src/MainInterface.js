@@ -34,6 +34,14 @@ class MainInterface extends Component {
     });
   }
 
+  handleAddAppointment = (appointmentData) => {
+    var currentAppointments = this.state.data;
+    currentAppointments.push(appointmentData);
+    this.setState({
+      data: currentAppointments
+    });
+  }
+
   render() {
     var appItems = this.state.data;
     var renderAppItems = appItems.map((item, index) => {
@@ -50,6 +58,7 @@ class MainInterface extends Component {
         <AddAppointment
          visibility={this.state.visible}
          onChange={this.handleToggle}
+         handleAdd={this.handleAddAppointment}
          />
         <ul className="item-list media-list">
         {renderAppItems}
