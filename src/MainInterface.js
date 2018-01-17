@@ -11,7 +11,8 @@ class MainInterface extends Component {
     data: [],
     visible: false,
     orderBy: 'petName',
-    orderDir: 'asc'
+    orderDir: 'asc',
+    queryText: ''
   }
 
   // Load data from data.json file
@@ -50,8 +51,8 @@ class MainInterface extends Component {
     var orderBy = this.state.orderBy;
     var orderDir = this.state.orderDir;
     var orderedItems = _.orderBy(this.state.data,
-      (item) => { return item[orderBy] },
-      (item) => { return item[orderDir] }
+      (item) => { return item[orderBy].toLowerCase() },
+      orderDir
     );
 
     this.setState({
@@ -61,10 +62,27 @@ class MainInterface extends Component {
     });
   }
 
+  searchFunction = (e) => {
+    this.setState({
+      queryText: e
+    });
+  }
+
   render() {
     // render appointments
+    var filteredApp = [];
     var appItems = this.state.data;
-    var renderAppItems = appItems.map((item, index) => {
+
+    appItems.forEach((item) => {
+      if(
+        (item.petName.toLocaleLowerCase().indexOf(this.state.queryText) !== -1) ||
+        (item.ownerName.toLocaleLowerCase().indexOf(this.state.queryText) !== -1)
+        ) {
+          filteredApp.push(item);
+        }
+      });
+
+    var renderAppItems = filteredApp.map((item, index) => {
       return (
               <Appointment
               key={index}
@@ -72,6 +90,8 @@ class MainInterface extends Component {
               onDelete={(e) => this.deleteAppointment(e)} />
             )
         });
+
+
 
 
     return (
@@ -86,6 +106,7 @@ class MainInterface extends Component {
            orderBy = {this.state.orderBy}
            orderDir = {this.state.orderDir}
            reOrder = {this.reOrder}
+           onSearch = {this.searchFunction}
          />
 
         <ul className="item-list media-list">
